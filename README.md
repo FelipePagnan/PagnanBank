@@ -219,4 +219,3 @@ https://www.linkedin.com/in/felipe-pagnan/
 
 Este projeto está sob a licença Pagnan.
 Sinta-se à vontade para estudar, utilizar e contribuir com melhorias.
-"# PagnanBank" 
