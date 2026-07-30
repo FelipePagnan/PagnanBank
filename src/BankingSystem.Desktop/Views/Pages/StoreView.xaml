@@ -1,0 +1,119 @@
+<UserControl x:Class="BankingSystem.Desktop.Views.Pages.StoreView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="24" />
+            <ColumnDefinition Width="360" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Catalog -->
+        <DockPanel Grid.Column="0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Loja Virtual" Style="{StaticResource H1}" />
+                <TextBlock Text="Compre no débito ou no crédito parcelado e ganhe cashback" Style="{StaticResource Muted}" Margin="0,2,0,20" />
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}" Padding="0">
+                <DataGrid ItemsSource="{Binding Catalog}" AutoGenerateColumns="False" IsReadOnly="True"
+                          HeadersVisibility="Column" GridLinesVisibility="Horizontal" BorderThickness="0"
+                          RowHeight="46" Background="White" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Produto" Width="*" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Categoria" Width="120" Binding="{Binding Category}" />
+                        <DataGridTextColumn Header="Preço" Width="110" Binding="{Binding Price, StringFormat={}{0:C}}" />
+                        <DataGridTextColumn Header="Cashback" Width="90" Binding="{Binding CashbackPercent, StringFormat={}{0:0.##}%}" />
+                        <DataGridTemplateColumn Header="" Width="110">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Adicionar" Height="30" Margin="6,0"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </DockPanel>
+
+        <!-- Cart -->
+        <Border Grid.Column="2" Style="{StaticResource Card}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Carrinho" Style="{StaticResource H2}" />
+
+                <StackPanel DockPanel.Dock="Bottom">
+                    <Separator Margin="0,8" />
+                    <Grid>
+                        <TextBlock Text="Total" Foreground="{StaticResource MutedTextBrush}" />
+                        <TextBlock Text="{Binding Total, StringFormat={}{0:C}}" HorizontalAlignment="Right"
+                                   FontWeight="Bold" FontSize="18" Foreground="{StaticResource TextBrush}" />
+                    </Grid>
+                    <Grid Margin="0,4,0,0">
+                        <TextBlock Text="Cashback estimado" Foreground="{StaticResource MutedTextBrush}" />
+                        <TextBlock Text="{Binding CashbackPreview, StringFormat={}{0:C}}" HorizontalAlignment="Right"
+                                   FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}" />
+                    </Grid>
+
+                    <TextBlock Text="PAGAMENTO" Style="{StaticResource FieldLabel}" />
+                    <ComboBox Height="38" ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding SelectedPayment}" />
+
+                    <StackPanel Visibility="{Binding IsCredit, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="PARCELAS" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding Installments, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="CARTÃO" Style="{StaticResource FieldLabel}" />
+                        <ComboBox Height="38" ItemsSource="{Binding ActiveCards}" SelectedItem="{Binding SelectedCard}"
+                                  DisplayMemberPath="Number" />
+                    </StackPanel>
+
+                    <TextBlock Margin="0,10,0,0" Foreground="{StaticResource MutedTextBrush}" FontSize="12">
+                        <Run Text="Saldo em conta: " />
+                        <Run Text="{Binding Balance, StringFormat={}{0:C}, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
+
+                    <Button Content="Finalizar compra" Style="{StaticResource PrimaryButton}" Margin="0,12,0,0"
+                            Command="{Binding CheckoutCommand}" />
+                </StackPanel>
+
+                <!-- Cart items -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                    <ItemsControl ItemsSource="{Binding Cart}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F6F8FB" CornerRadius="8" Padding="10" Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="{Binding Name}" FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextBrush}" TextTrimming="CharacterEllipsis" />
+                                        <Grid Grid.Row="1" Margin="0,6,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="−" Width="26" Height="26"
+                                                        Command="{Binding DataContext.DecreaseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+                                                <TextBlock Text="{Binding Quantity}" VerticalAlignment="Center" Margin="10,0"
+                                                           Foreground="{StaticResource TextBrush}" />
+                                                <Button Content="+" Width="26" Height="26"
+                                                        Command="{Binding DataContext.IncreaseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+                                                <Button Content="Remover" Height="26" Margin="10,0,0,0" Padding="8,0"
+                                                        Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding LineTotal, StringFormat={}{0:C}}" HorizontalAlignment="Right"
+                                                       VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

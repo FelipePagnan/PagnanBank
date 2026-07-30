@@ -1,0 +1,118 @@
+<Window x:Class="BankingSystem.Desktop.Views.ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:BankingSystem.Desktop.ViewModels"
+        xmlns:pages="clr-namespace:BankingSystem.Desktop.Views.Pages"
+        Title="PagnanBank"
+        Height="720" Width="1120"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <pages:DashboardView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StatementViewModel}">
+            <pages:StatementView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:NewTransactionViewModel}">
+            <pages:NewTransactionView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InvestmentsViewModel}">
+            <pages:InvestmentsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoansViewModel}">
+            <pages:LoansView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CardsViewModel}">
+            <pages:CardsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StoreViewModel}">
+            <pages:StoreView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReportsViewModel}">
+            <pages:ReportsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SimulatorsViewModel}">
+            <pages:SimulatorsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AdminUsersViewModel}">
+            <pages:AdminUsersView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AuditViewModel}">
+            <pages:AuditView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoginHistoryViewModel}">
+            <pages:LoginHistoryView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{StaticResource SidebarBrush}">
+            <Grid Margin="16,24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="PagnanBank" Foreground="White" FontSize="18" FontWeight="Bold" />
+                    <TextBlock Text="Painel de operações" Foreground="#9FB4CC" FontSize="12" Margin="0,2,0,8" />
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Button Content="Dashboard" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowDashboardCommand}" Margin="0,2" />
+                        <Button Content="Extrato" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowStatementCommand}" Margin="0,2" />
+                        <Button Content="Nova Transação" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowNewTransactionCommand}" Margin="0,2" />
+                        <Button Content="Investimentos" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowInvestmentsCommand}" Margin="0,2" />
+                        <Button Content="Empréstimos" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowLoansCommand}" Margin="0,2" />
+                        <Button Content="Cartões" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowCardsCommand}" Margin="0,2" />
+                        <Button Content="Loja" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowStoreCommand}" Margin="0,2" />
+                        <Button Content="Relatórios" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowReportsCommand}" Margin="0,2" />
+                        <Button Content="Simuladores" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowSimulatorsCommand}" Margin="0,2" />
+                        <Button Content="Administração" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowAdminCommand}" Margin="0,2"
+                                Visibility="{Binding IsAdministrator, Converter={StaticResource BoolToVis}}" />
+                        <Button Content="Auditoria" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowAuditCommand}" Margin="0,2"
+                                Visibility="{Binding IsAdministrator, Converter={StaticResource BoolToVis}}" />
+                        <Button Content="Histórico de Login" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowLoginHistoryCommand}" Margin="0,2"
+                                Visibility="{Binding IsAdministrator, Converter={StaticResource BoolToVis}}" />
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="2" Margin="0,12,0,0">
+                    <Border Background="#12FFFFFF" CornerRadius="10" Padding="12">
+                        <StackPanel>
+                            <TextBlock Text="{Binding CurrentUserName}" Foreground="White" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding RoleLabel}" Foreground="#9FB4CC" FontSize="12" />
+                        </StackPanel>
+                    </Border>
+                    <Button Content="Sair" Style="{StaticResource NavButton}" Margin="0,8,0,0"
+                            Foreground="#FFC9C9" Command="{Binding LogoutCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="28" />
+    </Grid>
+</Window>

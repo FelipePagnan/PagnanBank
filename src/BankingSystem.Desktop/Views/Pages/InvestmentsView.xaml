@@ -1,0 +1,74 @@
+<UserControl x:Class="BankingSystem.Desktop.Views.Pages.InvestmentsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="24" />
+            <ColumnDefinition Width="340" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Investimentos" Style="{StaticResource H1}" />
+                <TextBlock Text="Aplique, acompanhe e resgate seus investimentos" Style="{StaticResource Muted}" Margin="0,2,0,20" />
+            </StackPanel>
+
+            <Button DockPanel.Dock="Bottom" Content="Resgatar selecionado" Style="{StaticResource SecondaryButton}"
+                    Width="200" HorizontalAlignment="Left" Margin="0,16,0,0" Command="{Binding RedeemCommand}" />
+
+            <Border Style="{StaticResource Card}" Padding="0">
+                <DataGrid ItemsSource="{Binding Investments}" SelectedItem="{Binding Selected}"
+                          AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal" BorderThickness="0" RowHeight="38"
+                          Background="White" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Produto" Width="*" Binding="{Binding ProductName}" />
+                        <DataGridTextColumn Header="Aplicado" Width="120" Binding="{Binding Principal, StringFormat={}{0:C}}" />
+                        <DataGridTextColumn Header="Taxa a.a." Width="90" Binding="{Binding AnnualRatePercent, StringFormat={}{0:0.##}%}" />
+                        <DataGridTextColumn Header="Valor atual" Width="120" Binding="{Binding EstimatedValue, StringFormat={}{0:C}}" />
+                        <DataGridTextColumn Header="Início" Width="100" Binding="{Binding StartDateUtc, StringFormat=dd/MM/yyyy}" />
+                        <DataGridTextColumn Header="Status" Width="90" Binding="{Binding StatusLabel}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </DockPanel>
+
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Nova aplicação" Style="{StaticResource H2}" />
+                        <TextBlock Text="Saldo disponível" Style="{StaticResource Muted}" Margin="0,8,0,0" />
+                        <TextBlock Text="{Binding Balance, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="16" />
+
+                        <TextBlock Text="PRODUTO" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="VALOR (R$)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="TAXA ANUAL (%)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding Rate, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Button Content="Aplicar" Style="{StaticResource PrimaryButton}" Margin="0,20,0,0"
+                                Command="{Binding InvestCommand}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Simulador de investimento" Style="{StaticResource H2}" />
+                        <TextBlock Text="VALOR (R$)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding SimAmount, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="TAXA ANUAL (%)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding SimRate, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="PERÍODO (MESES)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding SimMonths, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="Simular" Style="{StaticResource SecondaryButton}" Margin="0,16,0,8"
+                                Command="{Binding SimulateCommand}" />
+                        <TextBlock Text="{Binding SimResult}" TextWrapping="Wrap" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

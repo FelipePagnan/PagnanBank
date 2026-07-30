@@ -1,0 +1,80 @@
+<UserControl x:Class="BankingSystem.Desktop.Views.Pages.SimulatorsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Simuladores" Style="{StaticResource H1}" />
+            <TextBlock Text="Financiamento, quitação antecipada e renegociação" Style="{StaticResource Muted}" Margin="0,2,0,20" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Financiamento (SAC) -->
+                <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top">
+                    <StackPanel>
+                        <TextBlock Text="Financiamento (SAC)" Style="{StaticResource H2}" />
+                        <TextBlock Text="Parcelas decrescentes" Style="{StaticResource Muted}" />
+
+                        <TextBlock Text="VALOR (R$)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding FinPrincipal, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="TAXA ANUAL (%)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding FinRate, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="PARCELAS (MESES)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding FinMonths, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Button Content="Simular" Style="{StaticResource PrimaryButton}" Margin="0,16,0,10"
+                                Command="{Binding SimulateFinancingCommand}" />
+                        <TextBlock Text="{Binding FinResult}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextBrush}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Quitação antecipada -->
+                <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                    <StackPanel>
+                        <TextBlock Text="Quitação antecipada" Style="{StaticResource H2}" />
+                        <TextBlock Text="Valor presente das parcelas" Style="{StaticResource Muted}" />
+
+                        <TextBlock Text="VALOR DA PARCELA (R$)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding QaInstallment, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="TAXA ANUAL (%)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding QaRate, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="PARCELAS RESTANTES" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding QaRemaining, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Button Content="Simular" Style="{StaticResource PrimaryButton}" Margin="0,16,0,10"
+                                Command="{Binding SimulateEarlyPayoffCommand}" />
+                        <TextBlock Text="{Binding QaResult}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextBrush}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Renegociação -->
+                <Border Grid.Column="4" Style="{StaticResource Card}" VerticalAlignment="Top">
+                    <StackPanel>
+                        <TextBlock Text="Renegociação" Style="{StaticResource H2}" />
+                        <TextBlock Text="Novo parcelamento (Price)" Style="{StaticResource Muted}" />
+
+                        <TextBlock Text="SALDO DEVEDOR (R$)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding RnOutstanding, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="NOVA TAXA ANUAL (%)" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding RnRate, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="NOVAS PARCELAS" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding RnMonths, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Button Content="Simular" Style="{StaticResource PrimaryButton}" Margin="0,16,0,10"
+                                Command="{Binding SimulateRenegotiationCommand}" />
+                        <TextBlock Text="{Binding RnResult}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextBrush}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

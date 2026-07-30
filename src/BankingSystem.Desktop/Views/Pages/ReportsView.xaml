@@ -1,0 +1,92 @@
+<UserControl x:Class="BankingSystem.Desktop.Views.Pages.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Relatórios" Style="{StaticResource H1}" />
+            <TextBlock Text="Resumo financeiro e exportação de dados" Style="{StaticResource Muted}" Margin="0,2,0,20" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Saldo atual" Style="{StaticResource Muted}" />
+                        <TextBlock Text="{Binding Balance, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="20" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Total investido" Style="{StaticResource Muted}" />
+                        <TextBlock Text="{Binding TotalInvested, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="20" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="4" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Empréstimos em aberto" Style="{StaticResource Muted}" />
+                        <TextBlock Text="{Binding LoansOutstanding, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="20" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Entradas (mês)" Style="{StaticResource Muted}" />
+                        <TextBlock Text="{Binding MonthIncome, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="20"
+                                   Foreground="{StaticResource AccentBrush}" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Saídas (mês)" Style="{StaticResource Muted}" />
+                        <TextBlock Text="{Binding MonthExpense, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="20"
+                                   Foreground="{StaticResource DangerBrush}" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="4" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Cashback acumulado" Style="{StaticResource Muted}" />
+                        <TextBlock Text="{Binding TotalCashback, StringFormat={}{0:C}}" Style="{StaticResource H2}" FontSize="20" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Exportações" Style="{StaticResource H2}" />
+                    <TextBlock Style="{StaticResource Muted}" Margin="0,4,0,12"
+                               Text="Exporte em PDF, Excel (.xlsx), planilha CSV ou um relatório HTML." TextWrapping="Wrap" />
+                    <WrapPanel>
+                        <Button Content="PDF" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,0,10,10"
+                                Command="{Binding ExportPdfCommand}" />
+                        <Button Content="Excel (.xlsx)" Style="{StaticResource SecondaryButton}" Width="150" Margin="0,0,10,10"
+                                Command="{Binding ExportXlsxCommand}" />
+                        <Button Content="Extrato (CSV)" Style="{StaticResource NavButton}" Width="150" Margin="0,0,10,10"
+                                Foreground="{StaticResource PrimaryBrush}" Command="{Binding ExportStatementCsvCommand}" />
+                        <Button Content="Relatório (HTML)" Style="{StaticResource NavButton}" Width="160" Margin="0,0,10,10"
+                                Foreground="{StaticResource PrimaryBrush}" Command="{Binding ExportReportHtmlCommand}" />
+                        <Button Content="Atualizar" Style="{StaticResource NavButton}" Width="110" Margin="0,0,10,10"
+                                Foreground="{StaticResource MutedTextBrush}" Command="{Binding RefreshCommand}" />
+                    </WrapPanel>
+                    <TextBlock Margin="0,12,0,0" Foreground="{StaticResource MutedTextBrush}" FontSize="12">
+                        <Run Text="Movimentações no extrato: " />
+                        <Run Text="{Binding TransactionCount, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
